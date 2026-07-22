@@ -111,11 +111,11 @@
             <div id="textView">
                 <!-- HTML Editor Box -->
                 <div id="htmlEditorContainer" style="height: 100%;">
-                    <div id="htmlEditor" style="height: 100%; width: 100%;">Put your HTML text here</div>
+                    <div id="htmlEditor" style="height: 100%; width: 100%;"></div>
                 </div>
                 <!-- CSS Editor Box -->
                 <div id="cssEditorContainer">
-                    <div id="cssEditor" style="height: 100%; width: 100%;">Put your CSS text here</div>
+                    <div id="cssEditor" style="height: 100%; width: 100%;"></div>
                 </div>
             </div>
             
@@ -140,21 +140,28 @@
         var currentTab = 'html';
         var htmlAce, cssAce;
 
+        // Starter Samples
+        var initialHtml = `<div class="container">\n  <h1>Hello World!</h1>\n  <p>Welcome to the ExpertCrafts Website Viewer.</p>\n  <button class="btn-demo">Click Me</button>\n</div>`;
+        
+        var initialCss = `body {\n  font-family: Arial, sans-serif;\n  background-color: #1e1e2e;\n  color: #cdd6f4;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100vh;\n  margin: 0;\n}\n\n.container {\n  text-align: center;\n  background: #313244;\n  padding: 30px;\n  border-radius: 12px;\n  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);\n}\n\nh1 {\n  color: #89b4fa;\n  margin-bottom: 10px;\n}\n\n.btn-demo {\n  background: #a6e3a1;\n  color: #11111b;\n  border: none;\n  padding: 10px 20px;\n  font-weight: bold;\n  border-radius: 6px;\n  cursor: pointer;\n  transition: 0.2s;\n}\n\n.btn-demo:hover {\n  background: #94e2d5;\n}`;
+
         window.onload = function() {
             // Initialize HTML Ace Editor
             htmlAce = ace.edit("htmlEditor");
             htmlAce.setTheme("ace/theme/chrome");
             htmlAce.session.setMode("ace/mode/html");
+            htmlAce.setValue(initialHtml, 1);
 
             // Initialize CSS Ace Editor
             cssAce = ace.edit("cssEditor");
             cssAce.setTheme("ace/theme/chrome");
             cssAce.session.setMode("ace/mode/css");
+            cssAce.setValue(initialCss, 1);
 
             // Sync with default script reference
             window.editor = htmlAce;
 
-            // Live updates on input
+            // Live updates on typing
             htmlAce.on("change", updatePreview);
             cssAce.on("change", updatePreview);
 
