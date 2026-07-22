@@ -17,16 +17,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Website Viewer - Real-time HTML and CSS Editor and Live Previewer">
-    
-    <title>Website Viewer</title>
+    <meta name="keywords" content="Website Viewer, HTML Viewer, CSS Viewer, Live Preview, ExpertCrafts">
+
+    <title>Website Viewer - ExpertCrafts</title>
 
     <!-- Stylesheets -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://www.onlineviewer.net/onlineviewer.v3.css">
-    <link rel="icon" href="https://www.onlineviewer.net/favicon.ico" />
+    <link rel="stylesheet" href="//www.onlineviewer.net/onlineviewer.v3.css">
+    <link rel="icon" href="//www.onlineviewer.net/favicon.ico" />
 
     <!-- External Libraries -->
+    <script src="//www.onlineviewer.net/vkbeautify.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.4/beautify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.4/beautify-css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.4/beautify-html.min.js"></script>
@@ -35,7 +37,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
 
     <style>
-        /* Custom Tab Styling */
         .mode-tabs {
             margin-bottom: 15px;
             display: flex;
@@ -76,15 +77,22 @@
             </div>
 
             <div id="textViewButtons">
-                <button onclick="updatePreview()" class="btn btn-primary btn-sm btn-block"><i class="fa fa-play fa-lg fa-fw"></i> Run / Update</button>
-                <button onclick="formatCurrentCode()" class="btn btn-default btn-sm btn-block"><i class="fa fa-indent fa-lg fa-fw"></i> Format Code</button>
-                <button id="btnSample" onclick="loadSampleCode()" class="btn btn-default btn-sm btn-block"><i class="fa fa-file-text-o fa-lg fa-fw"></i> Load Sample</button>
-                <button id="btnClear" onclick="clearCurrentCode()" class="btn btn-default btn-sm btn-block"><i class="fa fa-file-o fa-lg fa-fw"></i> Clear Active</button>
+                <button onclick="openHtmlPreview()" class="btn btn-default btn-sm btn-block"><i class="fa fa-eye fa-lg fa-fw"></i> Preview (Full page)</button>
+                <button onclick="openHighlightedSyntax()" class="btn btn-default btn-sm btn-block"><i class="fa fa-edit fa-lg fa-fw"></i> Highlight (Full page)</button>
+                <button onclick="formatCurrentCode()" class="btn btn-default btn-sm btn-block"><i class="fa fa-indent fa-lg fa-fw"></i> Format</button>
+                <button onclick="unfoldAll()" class="btn btn-default btn-sm btn-block"><i class="fa fa-plus-square fa-lg fa-fw"></i> Expand all</button>
+                <button onclick="foldAll()" class="btn btn-default btn-sm btn-block"><i class="fa fa-minus-square fa-lg fa-fw"></i> Collapse all</button>
+                <button id="btnClear" onclick="clearCurrentCode()" class="btn btn-default btn-sm btn-block"><i class="fa fa-file-o fa-lg fa-fw"></i> Clear</button>
+                <button id="btnImport" onclick="importText()" class="btn btn-default btn-sm btn-block"><i class="fa fa-upload fa-lg fa-fw"></i> Import from file</button>
+                <button id="btnExport" onclick="exportText()" class="btn btn-default btn-sm btn-block"><i class="fa fa-download fa-lg fa-fw"></i> Export to file</button>
+                <button id="btnDark" onclick="changeToDarkMode()" class="btn btn-default btn-sm btn-block"><i class="fa fa-moon-o fa-lg fa-fw"></i> Dark mode</button>
+                <button id="btnLight" onclick="changeToLightMode()" class="btn btn-default btn-sm btn-block" style="display:none"><i class="fa fa-sun-o fa-lg fa-fw"></i> Light mode</button>
                 
                 <a id="btnSupport" style="margin-top: 21px"
                     href="https://www.discordapp.com/users/1293198183433900135" target="_blank"
                     class="btn btn-default btn-sm btn-block">
-                    <i class="fa fa-bug fa-lg fa-fw"></i> Report Bugs</a>
+                    <i class="fa fa-thumbs-up fa-lg fa-fw"></i> Report Bugs</a>
+                <input type="file" id="inpImport" onclick="this.value=null;" accept="text/*" style="display:none">
             </div>
 
             <div id="aboutButtons">
@@ -103,11 +111,11 @@
             <div id="textView">
                 <!-- HTML Editor Box -->
                 <div id="htmlEditorContainer" style="height: 100%;">
-                    <div id="htmlEditor" style="height: 100%; width: 100%;"></div>
+                    <div id="htmlEditor" style="height: 100%; width: 100%;">Put your HTML text here</div>
                 </div>
                 <!-- CSS Editor Box -->
                 <div id="cssEditorContainer">
-                    <div id="cssEditor" style="height: 100%; width: 100%;"></div>
+                    <div id="cssEditor" style="height: 100%; width: 100%;">Put your CSS text here</div>
                 </div>
             </div>
             
@@ -118,9 +126,17 @@
         </div>
 
         <div id="rightsidebar"></div>
+        <div id="leftbottomabs">
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4523112948468173" crossorigin="anonymous"></script>
+            <ins class="adsbygoogle" style="display:inline-block;width:200px;height:200px" data-ad-client="ca-pub-4523112948468173" data-ad-slot="4008251510"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
     </div>
 
     <script>
+        var pageType = 'HTML';
         var currentTab = 'html';
         var htmlAce, cssAce;
 
@@ -129,15 +145,16 @@
             htmlAce = ace.edit("htmlEditor");
             htmlAce.setTheme("ace/theme/chrome");
             htmlAce.session.setMode("ace/mode/html");
-            htmlAce.setValue("<!-- Write your HTML here -->\n<div class=\"card\">\n  <h1>Hello World!</h1>\n  <p>Edit HTML and CSS to see live updates.</p>\n</div>", 1);
 
             // Initialize CSS Ace Editor
             cssAce = ace.edit("cssEditor");
             cssAce.setTheme("ace/theme/chrome");
             cssAce.session.setMode("ace/mode/css");
-            cssAce.setValue("/* Write your CSS here */\nbody {\n  font-family: sans-serif;\n  background: #222;\n  color: #fff;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  height: 100vh;\n  margin: 0;\n}\n\n.card {\n  background: #333;\n  padding: 20px;\n  border-radius: 8px;\n  text-align: center;\n}", 1);
 
-            // Auto-update iframe on typing
+            // Sync with default script reference
+            window.editor = htmlAce;
+
+            // Live updates on input
             htmlAce.on("change", updatePreview);
             cssAce.on("change", updatePreview);
 
@@ -152,18 +169,21 @@
                 $('#cssEditorContainer').hide();
                 $('#tabHtml').addClass('active');
                 $('#tabCss').removeClass('active');
+                window.editor = htmlAce;
                 htmlAce.focus();
             } else {
                 $('#htmlEditorContainer').hide();
                 $('#cssEditorContainer').show();
                 $('#tabCss').addClass('active');
                 $('#tabHtml').removeClass('active');
+                window.editor = cssAce;
                 cssAce.focus();
             }
         }
 
-        // Merge HTML + CSS into iframe
+        // Merge HTML + CSS into live preview iframe
         function updatePreview() {
+            if (!htmlAce || !cssAce) return;
             var htmlVal = htmlAce.getValue();
             var cssVal = cssAce.getValue();
             
@@ -180,17 +200,25 @@
             `;
 
             var iframe = document.getElementById('liveFrame');
-            iframe.srcdoc = fullDoc;
+            if (iframe) {
+                iframe.srcdoc = fullDoc;
+            }
         }
 
-        // Format active editor using JS Beautify
+        // Context-aware formatting
         function formatCurrentCode() {
             if (currentTab === 'html') {
-                var formatted = html_beautify(htmlAce.getValue());
-                htmlAce.setValue(formatted, 1);
+                if (typeof formatHtml === 'function') {
+                    formatHtml();
+                } else if (typeof html_beautify === 'function') {
+                    htmlAce.setValue(html_beautify(htmlAce.getValue()), 1);
+                }
             } else {
-                var formatted = css_beautify(cssAce.getValue());
-                cssAce.setValue(formatted, 1);
+                if (typeof formatCss === 'function') {
+                    formatCss();
+                } else if (typeof css_beautify === 'function') {
+                    cssAce.setValue(css_beautify(cssAce.getValue()), 1);
+                }
             }
         }
 
@@ -201,15 +229,10 @@
             } else {
                 cssAce.setValue("", 1);
             }
-        }
-
-        // Load basic starter code
-        function loadSampleCode() {
-            htmlAce.setValue("<div class=\"box\">\n  <h2>ExpertCrafts Website Viewer</h2>\n  <button>Click Me</button>\n</div>", 1);
-            cssAce.setValue(".box {\n  padding: 20px;\n  border: 2px solid #337ab7;\n  border-radius: 10px;\n  font-family: Arial, sans-serif;\n  text-align: center;\n}\n\nbutton {\n  padding: 8px 16px;\n  background: #337ab7;\n  color: white;\n  border: none;\n  border-radius: 4px;\n  cursor: pointer;\n}", 1);
             updatePreview();
         }
     </script>
+    <script src="//www.onlineviewer.net/onlineviewer.min.v5.js"></script>
 </body>
 
 </html>
