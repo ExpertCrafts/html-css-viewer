@@ -1,1 +1,128 @@
-There is no index.html found on this site.
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-97902571-5"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'UA-97902571-5');
+    </script>
+
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4523112948468173"
+        crossorigin="anonymous"></script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Website Viewer - Real-time HTML and CSS Editor and Live Previewer">
+    <meta name="keywords" content="Website Viewer, HTML Viewer, CSS Viewer, Live Preview, ExpertCrafts">
+
+    <title>Website Viewer</title>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="//www.onlineviewer.net/onlineviewer.v3.css">
+    <link rel="icon" href="//www.onlineviewer.net/favicon.ico" />
+
+    <!-- External Libraries -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.43.3/ace.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+    <style>
+        .banner-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #337ab7;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .launch-btn {
+            margin-top: 10px;
+            font-size: 16px;
+            padding: 10px 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="cover"></div>
+    <div id="separ"></div>
+    <div id="view">
+        <!-- Sidebar Controls -->
+        <div id="sidebar">
+            <!-- Header Banner -->
+            <div class="banner-text">Website Editor - 100% Free.</div>
+            
+            <h1 class="header"><a href="#" class="linkColor">Website Viewer</a></h1>
+
+            <!-- Single Launch Editor Button -->
+            <div id="textViewButtons">
+                <a href="https://expertcrafts.github.io/html-css-viewer/editor" class="btn btn-primary btn-block launch-btn">
+                    <i class="fa fa-external-link fa-lg fa-fw"></i> Launch Editor
+                </a>
+            </div>
+
+            <div id="aboutButtons" style="margin-top: 30px;">
+                <div class="copyrightText">
+                    <span id="copyright"></span> <a id="copyrightName"
+                        href="https://expertcrafts.github.io">By ExpertCrafts</a><br />
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Workspace / Preview Area -->
+        <div id="content">
+            <div id="textView">
+                <div id="htmlEditorContainer" style="height: 100%;">
+                    <div id="htmlEditor" style="height: 100%; width: 100%;"></div>
+                </div>
+            </div>
+            
+            <div id="livePreview">
+                <iframe id="liveFrame" title="Live Website Preview" sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-presentation allow-scripts"></iframe>
+            </div>
+        </div>
+
+        <div id="rightsidebar"></div>
+        <div id="leftbottomabs">
+            <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4523112948468173" crossorigin="anonymous"></script>
+            <ins class="adsbygoogle" style="display:inline-block;width:200px;height:200px" data-ad-client="ca-pub-4523112948468173" data-ad-slot="4008251510"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+
+    <script>
+        var pageType = 'HTML';
+        var htmlAce;
+
+        var initialHtml = `<div style="text-align:center; padding: 50px; font-family: sans-serif;">\n  <h1>Welcome to Website Viewer</h1>\n  <p>Click "Launch Editor" on the sidebar to start coding!</p>\n</div>`;
+
+        window.onload = function() {
+            htmlAce = ace.edit("htmlEditor");
+            htmlAce.setTheme("ace/theme/chrome");
+            htmlAce.session.setMode("ace/mode/html");
+            htmlAce.setValue(initialHtml, 1);
+            window.editor = htmlAce;
+
+            updatePreview();
+            htmlAce.on("change", updatePreview);
+        };
+
+        function updatePreview() {
+            if (!htmlAce) return;
+            var iframe = document.getElementById('liveFrame');
+            if (iframe) {
+                iframe.srcdoc = htmlAce.getValue();
+            }
+        }
+    </script>
+</body>
+
+</html>
