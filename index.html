@@ -188,28 +188,37 @@
             }
         }
 
+        // Helper to combine HTML + CSS into a full document
+        function getCombinedSource() {
+            var htmlVal = htmlAce ? htmlAce.getValue() : "";
+            var cssVal = cssAce ? cssAce.getValue() : "";
+            return `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>${cssVal}</style>
+</head>
+<body>
+    ${htmlVal}
+</body>
+</html>`;
+        }
+
         // Merge HTML + CSS into live preview iframe
         function updatePreview() {
             if (!htmlAce || !cssAce) return;
-            var htmlVal = htmlAce.getValue();
-            var cssVal = cssAce.getValue();
-            
-            var fullDoc = `
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <style>${cssVal}</style>
-                </head>
-                <body>
-                    ${htmlVal}
-                </body>
-                </html>
-            `;
-
             var iframe = document.getElementById('liveFrame');
             if (iframe) {
-                iframe.srcdoc = fullDoc;
+                iframe.srcdoc = getCombinedSource();
             }
+        }
+
+        // Override default openHtmlPreview to include BOTH HTML and CSS
+        function openHtmlPreview() {
+            var fullCode = getCombinedSource();
+            var blob = new Blob([fullCode], { type: 'text/html' });
+            var url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
         }
 
         // Context-aware formatting
